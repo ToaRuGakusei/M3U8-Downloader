@@ -1,0 +1,210 @@
+﻿<Window
+    x:Class="M3U8_Downloader.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:M3U8_Downloader"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Title="M3U8Downloader"
+    Width="800"
+    Height="600"
+    MaxWidth="800"
+    MaxHeight="600"
+    mc:Ignorable="d">
+    <TabControl>
+        <TabItem Header="Downloader">
+            <Grid Margin="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="1*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <!--  URL Input Section  -->
+                <StackPanel
+                    Grid.Row="0"
+                    Margin="0,10,0,10"
+                    Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="Enter M3U8 URL:" />
+                    <TextBox
+                        Name="UrlTextBox"
+                        Width="500"
+                        Height="30"
+                        Margin="5,0" />
+                    <Button
+                        Name="FetchButton"
+                        Width="120"
+                        Height="30"
+                        Margin="5,0"
+                        Click="FetchButton_Click"
+                        Content="Fetch Playlist" />
+                </StackPanel>
+
+                <!--  File Name Input  -->
+                <StackPanel
+                    Grid.Row="1"
+                    Margin="0,10,0,10"
+                    Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="Enter File Name:" />
+                    <TextBox
+                        x:Name="EntryFileName"
+                        Width="500"
+                        Height="30"
+                        Margin="5,0" />
+                </StackPanel>
+
+                <!--  Playlist Information  -->
+                <ListView
+                    Name="PlaylistListBox"
+                    Grid.Row="2"
+                    Margin="0,10,0,10"
+                    ItemsSource="{Binding Playlist}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn
+                                Width="300"
+                                DisplayMemberBinding="{Binding m3u8Url}"
+                                Header="Url" />
+                            <GridViewColumn
+                                Width="300"
+                                DisplayMemberBinding="{Binding fileName}"
+                                Header="FileName" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+
+                <!--  Download Options  -->
+                <StackPanel
+                    Grid.Row="3"
+                    Margin="0,10,0,10"
+                    Orientation="Horizontal">
+                    <Label VerticalAlignment="Center" Content="Destination Folder:" />
+                    <Label
+                        Name="DestinationFolderTextBox"
+                        Width="400"
+                        Margin="5,0"
+                        BorderBrush="Gray"
+                        BorderThickness="1"
+                        Content="{Binding filePath}" />
+                    <Button
+                        Name="BrowseButton"
+                        Width="100"
+                        Margin="5,0"
+                        Click="BrowseButton_Click"
+                        Content="Browse" />
+                </StackPanel>
+
+                <!--  Download Details  -->
+                <Grid Grid.Row="4" Margin="10">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        Margin="5"
+                        FontWeight="Bold"
+                        Text="Size:" />
+                    <TextBlock
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Margin="5"
+                        Text="{Binding Size}" />
+
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="0"
+                        Margin="5"
+                        FontWeight="Bold"
+                        Text="Time:" />
+                    <TextBlock
+                        Grid.Row="1"
+                        Grid.Column="1"
+                        Margin="5"
+                        Text="{Binding Time}" />
+
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="0"
+                        Margin="5"
+                        FontWeight="Bold"
+                        Text="Bitrate:" />
+                    <TextBlock
+                        Grid.Row="2"
+                        Grid.Column="1"
+                        Margin="5"
+                        Text="{Binding Bitrate}" />
+
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="0"
+                        Margin="5"
+                        FontWeight="Bold"
+                        Text="Speed:" />
+                    <TextBlock
+                        Grid.Row="3"
+                        Grid.Column="1"
+                        Margin="5"
+                        Text="{Binding Speed}" />
+                </Grid>
+
+                <!--  Progress and Status  -->
+                <StackPanel Grid.Row="5" Margin="0,10,0,10">
+                    <ProgressBar
+                        Name="DownloadProgressBar"
+                        Height="20"
+                        Margin="0,0,0,10"
+                        IsIndeterminate="{Binding isRunning}" />
+                    <TextBlock
+                        Name="StatusTextBlock"
+                        FontWeight="Bold"
+                        Text="{Binding Status}" />
+                </StackPanel>
+
+                <!--  Buttons  -->
+                <StackPanel
+                    Grid.Row="6"
+                    Margin="0,10,0,10"
+                    HorizontalAlignment="Center"
+                    Orientation="Horizontal">
+                    <Button
+                        Name="StartButton"
+                        Width="120"
+                        Margin="5"
+                        Click="StartButton_Click"
+                        Content="Start Download" />
+                    <Button
+                        Name="CancelButton"
+                        Width="120"
+                        Margin="5"
+                        Click="CancelButton_Click"
+                        Content="Cancel Download" />
+                    <Button
+                        Name="DeletePlaylist"
+                        Width="120"
+                        Margin="5"
+                        Click="DeletePlaylist_Click"
+                        Content="Delete Playlist" />
+                    <Button
+                        Name="ExitButton"
+                        Width="120"
+                        Margin="5"
+                        Click="ExitButton_Click"
+                        Content="Exit" />
+                </StackPanel>
+            </Grid>
+        </TabItem>
+    </TabControl>
+</Window>
